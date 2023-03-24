@@ -14,6 +14,7 @@
 #include <linux/can/error.h>
 
 #include <cstring>
+#include <iostream>
 
 #include <socketcan_interface/dispatcher.h>
 #include <socketcan_interface/string.h>
@@ -243,11 +244,13 @@ protected:
             if(frame_.can_id & CAN_ERR_FLAG){ // error message
                 input_.id = frame_.can_id & CAN_EFF_MASK;
                 input_.is_error = 1;
+                std::cout << "read frame error detected" << std::endl;
 
                 if (frame_.can_id & fatal_error_mask_) {
-                    ROSCANOPEN_ERROR("socketcan_interface", "internal error: " << input_.id);
-                    setInternalError(input_.id);
-                    setNotReady();
+                    std::cout << "FATAL read frame error detected, skipping internal error..." << std::endl;
+                    //ROSCANOPEN_ERROR("socketcan_interface", "internal error: " << input_.id);
+                    //setInternalError(input_.id);
+                    //setNotReady();
                 }
             }else{
                 input_.is_extended = (frame_.can_id & CAN_EFF_FLAG) ? 1 :0;
