@@ -244,10 +244,8 @@ protected:
             if(frame_.can_id & CAN_ERR_FLAG){ // error message
                 input_.id = frame_.can_id & CAN_EFF_MASK;
                 input_.is_error = 1;
-                std::cout << "read frame error detected" << std::endl;
-
                 if (frame_.can_id & fatal_error_mask_) {
-                    std::cout << "FATAL read frame error detected, skipping internal error..." << std::endl;
+                    std::cout << "FATAL read frame error detected, skipping internal error... frame id: " << +frame_.can_id  << std::endl;
                     //ROSCANOPEN_ERROR("socketcan_interface", "internal error: " << input_.id);
                     //setInternalError(input_.id);
                     //setNotReady();
